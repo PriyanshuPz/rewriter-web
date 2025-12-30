@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
-import { DM_Sans } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
-const fonts = DM_Sans({
-  variable: "--font-dm-sans",
+const fonts = Noto_Sans({
   subsets: ["latin"],
 });
 
@@ -19,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fonts.variable} antialiased`}>{children}</body>
+      <body className={`${fonts.className} antialiased`}>{children}</body>
     </html>
   );
 }
