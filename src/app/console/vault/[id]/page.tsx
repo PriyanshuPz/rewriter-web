@@ -3,7 +3,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { ArrowLeft, Plus } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
 import Brand from "@/components/core/brand";
 import UserProfile from "@/components/core/user-profile";
 import { Button } from "@/components/ui/button";
@@ -24,7 +23,6 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getAccentColor, getIcon } from "@/lib/ui-extras";
-import CreatePageModal from "../../../../components/modals/create-page-modal";
 import PageList from "./page-list";
 
 type Vault = {
@@ -42,7 +40,6 @@ export default function VaultDetailClient() {
   const { id } = useParams();
   const vaultId = id?.toString() ?? "";
   const router = useRouter();
-  const [isCreatePageOpen, setIsCreatePageOpen] = useState(false);
 
   const {
     data: vault,
@@ -170,7 +167,9 @@ export default function VaultDetailClient() {
 
         <div className="flex justify-between items-center">
           <h2 className="text-xl font-semibold">Pages</h2>
-          <Button onClick={() => setIsCreatePageOpen(true)}>
+          <Button
+            onClick={() => router.push(`/console/vault/${vaultId}/page/new`)}
+          >
             <Plus className="w-4 h-4 mr-2" />
             New Page
           </Button>
@@ -178,12 +177,6 @@ export default function VaultDetailClient() {
 
         <PageList vaultId={vaultId} />
       </div>
-
-      <CreatePageModal
-        vaultId={vaultId}
-        isOpen={isCreatePageOpen}
-        onClose={() => setIsCreatePageOpen(false)}
-      />
     </div>
   );
 }

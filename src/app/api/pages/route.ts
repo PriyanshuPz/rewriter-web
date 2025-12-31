@@ -2,7 +2,7 @@ import { headers } from "next/headers";
 import { type NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
-import { generateId } from "@/lib/utils";
+import { generateId, slugify } from "@/lib/utils";
 import { APIFault, resolveAPIErrors } from "../_api";
 
 export async function GET(req: NextRequest) {
@@ -60,6 +60,7 @@ export async function GET(req: NextRequest) {
         summary: true,
         thumbnail: true,
         tags: true,
+        slug: true,
         updatedAt: true,
         createdAt: true,
       },
@@ -127,9 +128,29 @@ export async function POST(req: NextRequest) {
       throw new APIFault("Vault not found", 404);
     }
 
+    // Generate a unique slug from title
+    const slug = slugify(title);
+    let slugSuffix = 0;
+    let uniqueSlug = slug;
+
+    // Check if slug exists and add suffix if needed
+    while (true) {
+      const existingPage = await prisma.page.findUnique({
+        where: { slug: uniqueSlug },
+      });
+
+      if (!existingPage) {
+        break;
+      }
+
+      slugSuffix++;
+      uniqueSlug = `${slug}-${slugSuffix}`;
+    }
+
     const page = await prisma.page.create({
       data: {
         id: generateId("pg"),
+        slug: uniqueSlug,
         title: title.trim(),
         content,
         summary: summary?.trim() || null,
@@ -144,6 +165,7 @@ export async function POST(req: NextRequest) {
       success: true,
       data: {
         id: page.id,
+        slug: page.slug,
         title: page.title,
         summary: page.summary,
         thumbnail: page.thumbnail,

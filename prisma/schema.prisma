@@ -16,13 +16,20 @@ model Vault {
   icon        String?
   accentColor String?
   userId      String
-
-  users Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+  mode        PageMode @default(PRIVATE)
+  users       Users    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   updatedAt DateTime @updatedAt
   createdAt DateTime @default(now())
 
   @@map("vaults")
+}
+
+enum PageMode {
+  PUBLIC
+  PRIVATE
+  BANNED
+  DELETED
 }
 
 model Page {
@@ -33,6 +40,8 @@ model Page {
   summary   String?
   content   String
   tags      String[]
+  slug      String   @unique @default(cuid())
+  mode      PageMode @default(PRIVATE)
 
   vaultId String
   userId  String

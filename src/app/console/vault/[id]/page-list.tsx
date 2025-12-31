@@ -1,7 +1,8 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Edit, FileText, Trash2 } from "lucide-react";
+import { Edit, ExternalLink, FileText, Trash2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -37,12 +38,14 @@ type Page = {
   summary: string | null;
   thumbnail: string | null;
   tags: string[];
+  slug: string;
   updatedAt: Date;
   createdAt: Date;
 };
 
 export default function PageList({ vaultId }: { vaultId: string }) {
   const queryClient = useQueryClient();
+  const router = useRouter();
   const [deletePageId, setDeletePageId] = useState<string | null>(null);
 
   const { data: pages, isLoading } = useQuery({
@@ -134,8 +137,19 @@ export default function PageList({ vaultId }: { vaultId: string }) {
                     variant="ghost"
                     size="icon"
                     className="h-8 w-8"
+                    onClick={() =>
+                      router.push(`/console/vault/page/${page.slug}`)
+                    }
+                    title="View published page"
+                  >
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    className="h-8 w-8"
                     onClick={() => {
-                      // TODO: Implement edit functionality
+                      // TODO: Navigate to edit page
                       toast.info("Edit functionality coming soon!");
                     }}
                   >
