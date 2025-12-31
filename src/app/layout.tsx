@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
+import { Fira_Sans } from "next/font/google";
 import "./globals.css";
+import ModalsProvider from "@/providers/modals";
+import QueryProvider from "@/providers/query";
 
-const fonts = Noto_Sans({
+const fonts = Fira_Sans({
   subsets: ["latin"],
+  weight: ["400", "700", "900", "800"],
 });
 
 export const metadata: Metadata = {
@@ -18,7 +21,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${fonts.className} antialiased`}>{children}</body>
+      <body className={`${fonts.className} antialiased`}>
+        <QueryProvider>
+          {children}
+          <ModalsProvider />
+        </QueryProvider>
+      </body>
     </html>
   );
 }

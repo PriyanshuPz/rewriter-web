@@ -13,10 +13,14 @@ model Vault {
   title       String
   description String?
   pages       Page[]
-
-  userId String
+  icon        String?
+  accentColor String?
+  userId      String
 
   users Users @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
 
   @@map("vaults")
 }
@@ -36,6 +40,9 @@ model Page {
   user  Users @relation(fields: [userId], references: [id], onDelete: Cascade)
   vault Vault @relation(fields: [vaultId], references: [id], onDelete: Cascade)
 
+  updatedAt DateTime @updatedAt
+  createdAt DateTime @default(now())
+
   @@map("pages")
 }
 
@@ -43,6 +50,8 @@ model Users {
   id            String     @id
   name          String
   email         String
+  bio           String?
+  username      String     @unique
   emailVerified Boolean    @default(false)
   image         String?
   createdAt     DateTime   @default(now())

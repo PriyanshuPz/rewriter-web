@@ -51,7 +51,7 @@ body {
   font-size: 20px;
 }
 
-body {
+/* body {
   min-height: 100vh;
   background: #fff;
   color: #000;
@@ -63,7 +63,7 @@ body {
   background-size: 50px 50px;
 
   overflow-x: hidden;
-}
+} */
 
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
