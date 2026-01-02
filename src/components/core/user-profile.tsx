@@ -6,6 +6,7 @@ import {
   VerifiedIcon,
 } from "lucide-react";
 import moment from "moment";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -83,9 +84,11 @@ export default function UserProfile() {
           <span>Joined {moment(user.createdAt).fromNow()}</span>
         </div>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <Settings2Icon /> Settings
-        </DropdownMenuItem>
+        <Link href="/settings">
+          <DropdownMenuItem>
+            <Settings2Icon /> Settings
+          </DropdownMenuItem>
+        </Link>
         <DropdownMenuSeparator />
 
         <DropdownMenuItem

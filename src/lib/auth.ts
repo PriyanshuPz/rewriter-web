@@ -1,7 +1,7 @@
 import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
-import { customSession } from "better-auth/plugins";
+import { apiKey, customSession } from "better-auth/plugins";
 import { prisma } from "./prisma";
 import { generateId } from "./utils";
 
@@ -48,6 +48,9 @@ export const auth = betterAuth({
   },
   plugins: [
     nextCookies(),
+    apiKey({
+      enableSessionForAPIKeys: true,
+    }),
     customSession(async ({ user, session }) => {
       return {
         user: {
